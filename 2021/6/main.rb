@@ -19,7 +19,7 @@ class System
   def initialize(lanternfishes)
     @lanternfishes = lanternfishes
   end
-  # Instead of dealing with one large array, deal with multiple smaller arrays concurrently
+  
   def simulate 
     to_add = []
     @lanternfishes.each do |lanternfish|
@@ -37,28 +37,57 @@ class System
 end
 
 def take_input(is_trial = false)
-  File.read(is_trial ? "trial.txt" : "input.txt").split(',').map {|timer| LanternFish.new(timer.to_i)}
+  # File.read(is_trial ? "trial.txt" : "input.txt").split(',').map {|timer| LanternFish.new(timer.to_i)}
+  File.read(is_trial ? "trial.txt" : "input.txt").split(',')
 end
 
-def sol_1(system)
-  (1..80).each do 
-    system.simulate
+def sol_1(hash)
+  # (1..80).each do 
+  #   system.simulate
+  # end
+  # system.get_lanternfish_number
+  (1..80).each do |i|
+    temp = hash["1"]
+    (1..7).each do |j|
+      hash[j.to_s] = hash[(j+1).to_s]
+    end
+    hash["6"] += hash["0"]
+    hash["8"] = hash["0"]
+    hash["0"] = temp
   end
-  system.get_lanternfish_number
+  num_fish = 0
+  hash.each do |key, value|
+    num_fish += value
+  end
+  num_fish
 end
 
-def sol_2(system)
-  (1..256).each do |num|
-    puts "Simulating Day: #{num}"
-    system.simulate
+def sol_2(hash)
+  (1..256).each do |i|
+    temp = hash["1"]
+    (1..7).each do |j|
+      hash[j.to_s] = hash[(j+1).to_s]
+    end
+    hash["6"] += hash["0"]
+    hash["8"] = hash["0"]
+    hash["0"] = temp
   end
-  system.get_lanternfish_number
+  num_fish = 0
+  hash.each do |key, value|
+    num_fish += value
+  end
+  num_fish
 end
 
 def main
   fishes = take_input
-  puts sol_1(System.new(fishes))
-  puts sol_2(System.new(fishes))
+  hash = {"0" => 0, "1" => 0, "2" => 0, "3" => 0, "4" => 0, "5" => 0, "6" => 0, "7" => 0, "8" => 0}
+  fishes.each do |fish|
+    hash[fish] += 1
+  end
+
+  puts sol_1(hash.clone)
+  puts sol_2(hash.clone)
 end
 
 main
