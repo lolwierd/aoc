@@ -10,7 +10,7 @@ import (
 	"unicode"
 )
 
-func readInput() (inputs []string) {
+func ReadInput() (inputs []string) {
 	file, err := os.Open("input.txt")
 	// file, err := os.Open("testinput.txt")
 	if err != nil {
@@ -30,7 +30,7 @@ func readInput() (inputs []string) {
 	return
 }
 
-func decodeCalibrationP1(encodedCalibration string) (calibration int64) {
+func DecodeCalibrationP1(encodedCalibration string) (calibration int64) {
 	var firstNum string
 	var lastNum string
 	digitRegex := regexp.MustCompile(`(\d)`)
@@ -45,7 +45,7 @@ func decodeCalibrationP1(encodedCalibration string) (calibration int64) {
 	return
 }
 
-func decodeCalibrationP2(encodedCalibration string) (calibration int64) {
+func DecodeCalibrationP2(encodedCalibration string) (calibration int64) {
 	var firstNum string
 	var lastNum string
 
@@ -56,7 +56,7 @@ func decodeCalibrationP2(encodedCalibration string) (calibration int64) {
 			continue
 		}
 		var digit string
-		digit, toSkip = getDigit(encodedCalibration[idx:])
+		digit, toSkip = GetDigit(encodedCalibration[idx:])
 		if digit != "" {
 			if firstNum == "" {
 				firstNum = digit
@@ -69,7 +69,7 @@ func decodeCalibrationP2(encodedCalibration string) (calibration int64) {
 	return
 }
 
-func getDigit(inputString string) (digit string, toSkip int) {
+func GetDigit(inputString string) (digit string, toSkip int) {
 	if unicode.IsDigit(rune(inputString[0])) {
 		digit = string(inputString[0])
 		toSkip = 0
@@ -98,7 +98,7 @@ func getDigit(inputString string) (digit string, toSkip int) {
 }
 
 func main() {
-	inputs := readInput()
+	inputs := ReadInput()
 	decodedCalibrations := make([]int64, 0)
 	sum := 0
 
@@ -109,7 +109,7 @@ func main() {
 
 	// P2
 	for _, encodedCalibration := range inputs {
-		decodedCalibrations = append(decodedCalibrations, decodeCalibrationP2(encodedCalibration))
+		decodedCalibrations = append(decodedCalibrations, DecodeCalibrationP2(encodedCalibration))
 	}
 
 	for _, calibration := range decodedCalibrations {
